@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Build outputs
+dist/
+build/
+coverage/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+
+# Data and model artifacts
+data/assets/*
+data/routes/*
+data/weather/*
+data/events/*
+ml/haul_truck/*
+ml/drill/*
+ml/excavator/*
+ml/maintenance/*
+!data/assets/README.md
+!data/routes/README.md
+!data/weather/README.md
+!data/events/README.md
+!ml/haul_truck/README.md
+!ml/drill/README.md
+!ml/excavator/README.md
+!ml/maintenance/README.md

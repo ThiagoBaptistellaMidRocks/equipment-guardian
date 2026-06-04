@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://equipment-guardian.local/contracts/asset.schema.json",
+  "title": "Equipment Guardian Asset Contract",
+  "description": "Canonical JSON Schema contract for mining assets, asset health, and asset telemetry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["asset", "health", "telemetry"],
+  "properties": {
+    "asset": {
+      "$ref": "#/$defs/Asset"
+    },
+    "health": {
+      "$ref": "#/$defs/AssetHealth"
+    },
+    "telemetry": {
+      "$ref": "#/$defs/AssetTelemetry"
+    }
+  },
+  "$defs": {
+    "AssetType": {
+      "type": "string",
+      "enum": ["HAUL_TRUCK", "EXCAVATOR", "DRILL"]
+    },
+    "AssetHealthStatus": {
+      "type": "string",
+      "enum": ["UNKNOWN", "NORMAL", "WARNING", "CRITICAL", "OFFLINE"]
+    },
+    "Asset": {
+      "title": "Asset",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "assetType", "name"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assetType": {
+          "$ref": "#/$defs/AssetType"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "siteId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manufacturer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "AssetHealth": {
+      "title": "AssetHealth",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetId", "status", "observedAt"],
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "$ref": "#/$defs/AssetHealthStatus"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "indicators": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "AssetTelemetry": {
+      "title": "AssetTelemetry",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetId", "recordedAt", "measurements"],
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "measurements": {
+          "type": "object",
+          "description": "Asset telemetry measurements keyed by canonical measurement name.",
+          "minProperties": 1,
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

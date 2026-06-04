@@ -1,0 +1,2 @@
+"""Equipment Guardian backend package."""
+
