@@ -1,5 +1,5 @@
 import { apiClient } from "./client";
-import type { AssetAlert, AssetHealth, AssetOverview } from "../types/assets";
+import type { AssetAlert, AssetHealth, AssetOverview, Prediction } from "../types/assets";
 
 export async function listAssets(): Promise<AssetOverview[]> {
   const response = await apiClient.get<AssetOverview[]>("/api/assets");
@@ -18,5 +18,15 @@ export async function listHealth(): Promise<AssetHealth[]> {
 
 export async function listAlerts(): Promise<AssetAlert[]> {
   const response = await apiClient.get<AssetAlert[]>("/api/alerts");
+  return response.data;
+}
+
+export async function listPredictions(): Promise<Prediction[]> {
+  const response = await apiClient.get<Prediction[]>("/api/predictions");
+  return response.data;
+}
+
+export async function getPrediction(assetId: string): Promise<Prediction> {
+  const response = await apiClient.get<Prediction>(`/api/predictions/${assetId}`);
   return response.data;
 }

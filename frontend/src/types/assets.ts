@@ -4,6 +4,8 @@ export type RiskLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
 export type AlertSeverity = "MEDIUM" | "HIGH" | "CRITICAL";
 
+export type PredictionEventType = "TIRE_OVERHEAT" | "TIRE_BLOWOUT" | "ENGINE_OVERHEAT";
+
 export interface AssetPosition {
   x: number;
   y: number;
@@ -56,4 +58,13 @@ export interface AssetOverview {
   asset: Asset;
   health: AssetHealth;
   telemetry: AssetTelemetry;
+}
+
+export interface Prediction {
+  assetId: string;
+  assetType: AssetType;
+  eventType: PredictionEventType;
+  confidence: number;
+  timeToEventMinutes: number;
+  recommendedAction: string;
 }

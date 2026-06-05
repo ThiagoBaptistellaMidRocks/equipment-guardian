@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAsset, listAlerts, listAssets, listHealth } from "../services/assets";
+import { getAsset, getPrediction, listAlerts, listAssets, listHealth, listPredictions } from "../services/assets";
 
 export function useAssets() {
   return useQuery({
@@ -27,5 +27,21 @@ export function useAlerts() {
   return useQuery({
     queryKey: ["alerts"],
     queryFn: listAlerts
+  });
+}
+
+export function usePredictions() {
+  return useQuery({
+    queryKey: ["predictions"],
+    queryFn: listPredictions
+  });
+}
+
+export function usePrediction(assetId: string | null) {
+  return useQuery({
+    queryKey: ["predictions", assetId],
+    queryFn: () => getPrediction(assetId ?? ""),
+    enabled: Boolean(assetId),
+    retry: false
   });
 }

@@ -1,5 +1,6 @@
 import { AlertTriangle, ArrowLeft, Truck, X } from "lucide-react";
 import type { CSSProperties } from "react";
+import { usePrediction } from "../hooks/useAssets";
 import type { AssetOverview } from "../types/assets";
 import { formatAssetType, healthTone, measurementNumber, measurementText } from "../utils/assets";
 
@@ -143,6 +144,41 @@ function Timeline() {
   );
 }
 
+function OperationalPrediction({ assetId }: { assetId: string }) {
+  const predictionQuery = usePrediction(assetId);
+
+  if (predictionQuery.isLoading) {
+    return (
+      <section className="drawer-section">
+        <h3>Operational Prediction</h3>
+        <p className="prediction-empty">Evaluating telemetry trends...</p>
+      </section>
+    );
+  }
+
+  if (predictionQuery.isError || !predictionQuery.data) {
+    return (
+      <section className="drawer-section">
+        <h3>Operational Prediction</h3>
+        <p className="prediction-empty">No active prediction for this asset.</p>
+      </section>
+    );
+  }
+
+  const prediction = predictionQuery.data;
+  return (
+    <section className="drawer-section">
+      <h3>Operational Prediction</h3>
+      <article className="prediction-panel">
+        <div className="prediction-row"><span>Predicted Event</span><strong>{prediction.eventType.replace(/_/g, " ")}</strong></div>
+        <div className="prediction-row"><span>Confidence</span><strong>{Math.round(prediction.confidence * 100)}%</strong></div>
+        <div className="prediction-row"><span>Time To Event</span><strong>{prediction.timeToEventMinutes} min</strong></div>
+        <div className="prediction-row"><span>Recommended Action</span><strong>{prediction.recommendedAction}</strong></div>
+      </article>
+    </section>
+  );
+}
+
 export function AssetDrawer({ assetOverview, isLoading, onClose }: AssetDrawerProps) {
   const isOpen = Boolean(assetOverview) || isLoading;
   const measurements = assetOverview?.telemetry.measurements ?? {};
@@ -181,6 +217,7 @@ export function AssetDrawer({ assetOverview, isLoading, onClose }: AssetDrawerPr
           <HealthOverview assetOverview={assetOverview} />
           <TireMonitor assetOverview={assetOverview} />
           <RiskInsight assetOverview={assetOverview} />
+          <OperationalPrediction assetId={assetOverview.asset.id} />
           <RecommendedActions assetOverview={assetOverview} isCritical={isCritical} />
           <Timeline />
         </>
