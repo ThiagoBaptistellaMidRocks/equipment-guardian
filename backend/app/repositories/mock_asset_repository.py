@@ -57,6 +57,8 @@ class MockAssetRepository:
                     "task": "Hauling/Crusher",
                     "speedKph": 52,
                     "engineHours": 6240.2,
+                    "ambientTemperatureC": 31.2,
+                    "tireAgeHours": 428.0,
                     "tireLoadPercent": 92,
                     "usefulLifeHours": 1.2,
                     "payloadTonnes": 238,
@@ -81,6 +83,8 @@ class MockAssetRepository:
                 {
                     "speedKph": 28.4,
                     "engineTempC": 91.2,
+                    "ambientTemperatureC": 30.4,
+                    "tireAgeHours": 384.0,
                     "payloadTonnes": 206,
                     "payloadCapacityTonnes": 220,
                     "fuelLevelPercent": 64,
@@ -104,6 +108,8 @@ class MockAssetRepository:
                 {
                     "speedKph": 47.9,
                     "engineTempC": 88.1,
+                    "ambientTemperatureC": 32.8,
+                    "tireAgeHours": 446.0,
                     "payloadTonnes": 224,
                     "payloadCapacityTonnes": 220,
                     "fuelLevelPercent": 51,
@@ -127,6 +133,8 @@ class MockAssetRepository:
                 {
                     "speedKph": 22.1,
                     "engineTempC": 84.6,
+                    "ambientTemperatureC": 29.8,
+                    "tireAgeHours": 362.0,
                     "payloadTonnes": 205,
                     "payloadCapacityTonnes": 220,
                     "fuelLevelPercent": 72,
@@ -177,6 +185,8 @@ class MockAssetRepository:
                 {
                     "speedKph": 12.4,
                     "engineTempC": 79.9,
+                    "ambientTemperatureC": 27.6,
+                    "tireAgeHours": 316.0,
                     "payloadTonnes": 0,
                     "payloadCapacityTonnes": 220,
                     "fuelLevelPercent": 83,
@@ -200,6 +210,8 @@ class MockAssetRepository:
                 {
                     "speedKph": 4.1,
                     "engineTempC": 76.8,
+                    "ambientTemperatureC": 26.9,
+                    "tireAgeHours": 301.0,
                     "payloadTonnes": 0,
                     "payloadCapacityTonnes": 220,
                     "fuelLevelPercent": 69,

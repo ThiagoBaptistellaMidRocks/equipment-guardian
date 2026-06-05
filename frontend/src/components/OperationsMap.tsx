@@ -1,8 +1,8 @@
 import { Canvas, ThreeEvent } from "@react-three/fiber";
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { Color, InstancedMesh, Matrix4, Vector3 } from "three";
-import { usePredictions } from "../hooks/useAssets";
-import type { AssetOverview, Prediction } from "../types/assets";
+import { useMlPredictions, usePredictions } from "../hooks/useAssets";
+import type { AssetOverview, MlPrediction, Prediction } from "../types/assets";
 import { assetIcon, healthTone, mapPositionToPercent } from "../utils/assets";
 
 interface OperationsMapProps {
@@ -116,6 +116,7 @@ function AssetLabels({
   onAssetSelect
 }: OperationsMapProps) {
   const predictionsQuery = usePredictions();
+  const mlPredictionsQuery = useMlPredictions();
   const predictionByAsset = useMemo(() => {
     const index = new Map<string, Prediction>();
     (predictionsQuery.data ?? []).forEach((prediction) => {
@@ -123,6 +124,13 @@ function AssetLabels({
     });
     return index;
   }, [predictionsQuery.data]);
+  const mlPredictionByAsset = useMemo(() => {
+    const index = new Map<string, MlPrediction>();
+    (mlPredictionsQuery.data ?? []).forEach((prediction) => {
+      index.set(prediction.assetId, prediction);
+    });
+    return index;
+  }, [mlPredictionsQuery.data]);
 
   const visibleLabels = useMemo(() => {
     if (assets.length <= 120) {
@@ -140,7 +148,9 @@ function AssetLabels({
         const position = mapPositionToPercent(asset.position);
         const tone = healthTone(health.riskLevel);
         const prediction = predictionByAsset.get(asset.id);
+        const mlPrediction = mlPredictionByAsset.get(asset.id);
         const showPredictionBadge = prediction && (health.riskLevel === "HIGH" || health.riskLevel === "CRITICAL");
+        const showMlBadge = mlPrediction && (health.riskLevel === "HIGH" || health.riskLevel === "CRITICAL");
         return (
           <button
             className={`map-marker-label ${tone} ${selectedAssetId === asset.id ? "selected" : ""}`}
@@ -152,6 +162,7 @@ function AssetLabels({
             <span className="marker-glyph">{assetIcon(asset.assetType)}</span>
             <small>{asset.id}</small>
             {showPredictionBadge ? <em className="prediction-badge">{prediction.eventType.replace("_", " ")}</em> : null}
+            {showMlBadge ? <em className="ml-badge">ML {Math.round((mlPrediction.probability * 100))}%</em> : null}
           </button>
         );
       })}

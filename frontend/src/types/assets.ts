@@ -68,3 +68,11 @@ export interface Prediction {
   timeToEventMinutes: number;
   recommendedAction: string;
 }
+
+export interface MlPrediction {
+  assetId: string;
+  predictedEvent: PredictionEventType;
+  probability: number;
+  confidence: number;
+  modelVersion: string;
+}

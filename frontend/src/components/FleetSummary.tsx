@@ -1,12 +1,34 @@
 import { Activity, AlertTriangle, CircleAlert, Gauge, Timer } from "lucide-react";
+import { useMemo } from "react";
+import { useMlPredictions } from "../hooks/useAssets";
 import type { AssetOverview } from "../types/assets";
 
 export function FleetSummary({ assets }: { assets: AssetOverview[] }) {
+  const mlPredictionsQuery = useMlPredictions();
   const critical = assets.filter(({ health }) => health.riskLevel === "CRITICAL").length;
   const atRisk = assets.filter(({ health }) => health.riskLevel === "HIGH" || health.riskLevel === "CRITICAL").length;
   const averageFleetHealth = assets.length
     ? Math.round(assets.reduce((total, { health }) => total + health.healthScore, 0) / assets.length)
     : 0;
+  const mlMetrics = useMemo(() => {
+    const predictions = mlPredictionsQuery.data ?? [];
+    const highestRiskAssets = [...predictions]
+      .sort((left, right) => right.probability - left.probability)
+      .slice(0, 3)
+      .map((prediction) => prediction.assetId)
+      .join(", ");
+
+    const predictedFailuresToday = predictions.filter((prediction) => prediction.probability >= 0.7).length;
+    const averagePredictionConfidence = predictions.length
+      ? Math.round(predictions.reduce((total, prediction) => total + prediction.confidence, 0) / predictions.length)
+      : 0;
+
+    return {
+      highestRiskAssets: highestRiskAssets || "None",
+      predictedFailuresToday,
+      averagePredictionConfidence
+    };
+  }, [mlPredictionsQuery.data]);
 
   return (
     <section className="fleet-summary">
@@ -24,6 +46,11 @@ export function FleetSummary({ assets }: { assets: AssetOverview[] }) {
       <div className="cycle-row">
         <span>Haul Cycle Time</span>
         <strong>28.2 min avg</strong>
+      </div>
+      <div className="ml-summary">
+        <div><span>Predicted Failures Today</span><strong>{mlMetrics.predictedFailuresToday}</strong></div>
+        <div><span>Assets With Highest Risk</span><strong>{mlMetrics.highestRiskAssets}</strong></div>
+        <div><span>Average Prediction Confidence</span><strong>{mlMetrics.averagePredictionConfidence}%</strong></div>
       </div>
       <div className="cycle-bars" aria-hidden="true">
         {[0.66, 0.8, 0.56, 0.74, 0.5].map((height, index) => (

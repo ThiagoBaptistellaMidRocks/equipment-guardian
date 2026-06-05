@@ -1,6 +1,6 @@
 import { AlertTriangle, ArrowLeft, Truck, X } from "lucide-react";
 import type { CSSProperties } from "react";
-import { usePrediction } from "../hooks/useAssets";
+import { useMlPrediction, usePrediction } from "../hooks/useAssets";
 import type { AssetOverview } from "../types/assets";
 import { formatAssetType, healthTone, measurementNumber, measurementText } from "../utils/assets";
 
@@ -179,6 +179,41 @@ function OperationalPrediction({ assetId }: { assetId: string }) {
   );
 }
 
+function MlPredictionPanel({ assetId }: { assetId: string }) {
+  const predictionQuery = useMlPrediction(assetId);
+
+  if (predictionQuery.isLoading) {
+    return (
+      <section className="drawer-section">
+        <h3>Machine Learning Prediction</h3>
+        <p className="prediction-empty">Loading ML model output...</p>
+      </section>
+    );
+  }
+
+  if (predictionQuery.isError || !predictionQuery.data) {
+    return (
+      <section className="drawer-section">
+        <h3>Machine Learning Prediction</h3>
+        <p className="prediction-empty">No ML prediction available for this asset.</p>
+      </section>
+    );
+  }
+
+  const prediction = predictionQuery.data;
+  return (
+    <section className="drawer-section">
+      <h3>Machine Learning Prediction</h3>
+      <article className="ml-prediction-panel">
+        <div className="prediction-row"><span>Predicted Event</span><strong>{prediction.predictedEvent.replace(/_/g, " ")}</strong></div>
+        <div className="prediction-row"><span>Probability</span><strong>{Math.round(prediction.probability * 100)}%</strong></div>
+        <div className="prediction-row"><span>Confidence</span><strong>{prediction.confidence}%</strong></div>
+        <div className="prediction-row"><span>Model</span><strong>{prediction.modelVersion}</strong></div>
+      </article>
+    </section>
+  );
+}
+
 export function AssetDrawer({ assetOverview, isLoading, onClose }: AssetDrawerProps) {
   const isOpen = Boolean(assetOverview) || isLoading;
   const measurements = assetOverview?.telemetry.measurements ?? {};
@@ -218,6 +253,7 @@ export function AssetDrawer({ assetOverview, isLoading, onClose }: AssetDrawerPr
           <TireMonitor assetOverview={assetOverview} />
           <RiskInsight assetOverview={assetOverview} />
           <OperationalPrediction assetId={assetOverview.asset.id} />
+          <MlPredictionPanel assetId={assetOverview.asset.id} />
           <RecommendedActions assetOverview={assetOverview} isCritical={isCritical} />
           <Timeline />
         </>
