@@ -1,5 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAsset, getMlPrediction, getPrediction, listAlerts, listAssets, listHealth, listMlPredictions, listPredictions } from "../services/assets";
+import {
+  getAsset,
+  getAssetHistory,
+  getAssetTimeline,
+  getFleetAnalytics,
+  getMlPrediction,
+  getPrediction,
+  listAlerts,
+  listAssets,
+  listHealth,
+  listMlPredictions,
+  listPredictions
+} from "../services/assets";
 
 export function useAssets() {
   return useQuery({
@@ -59,5 +71,30 @@ export function useMlPrediction(assetId: string | null) {
     queryFn: () => getMlPrediction(assetId ?? ""),
     enabled: Boolean(assetId),
     retry: false
+  });
+}
+
+export function useAssetHistory(assetId: string | null) {
+  return useQuery({
+    queryKey: ["asset-history", assetId],
+    queryFn: () => getAssetHistory(assetId ?? ""),
+    enabled: Boolean(assetId),
+    retry: false
+  });
+}
+
+export function useAssetTimeline(assetId: string | null) {
+  return useQuery({
+    queryKey: ["asset-timeline", assetId],
+    queryFn: () => getAssetTimeline(assetId ?? ""),
+    enabled: Boolean(assetId),
+    retry: false
+  });
+}
+
+export function useFleetAnalytics() {
+  return useQuery({
+    queryKey: ["fleet-analytics"],
+    queryFn: getFleetAnalytics
   });
 }

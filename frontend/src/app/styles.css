@@ -701,6 +701,31 @@ button {
   padding: 0 12px 12px;
 }
 
+.drawer-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+
+.drawer-tabs button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: #9eb0c7;
+  background: #0f1728;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.drawer-tabs button.active {
+  border-color: var(--orange);
+  color: #fff;
+  background: rgba(255, 120, 31, 0.22);
+}
+
 .detail-cell,
 .metric-card {
   display: grid;
@@ -911,6 +936,55 @@ button {
   margin: 0;
   color: #8fa2b8;
   font-size: 0.76rem;
+}
+
+.prediction-drivers {
+  display: grid;
+  gap: 8px;
+}
+
+.prediction-drivers span {
+  color: #9db6cd;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.prediction-drivers ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 16px;
+  color: #eaf4ff;
+  font-size: 0.74rem;
+}
+
+.prediction-support-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.prediction-support-grid div {
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid #204567;
+  border-radius: 4px;
+  background: rgba(26, 52, 76, 0.2);
+}
+
+.prediction-support-grid span {
+  color: #99b0c7;
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.prediction-support-grid strong {
+  color: #f2f8ff;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.78rem;
 }
 
 .action-list,

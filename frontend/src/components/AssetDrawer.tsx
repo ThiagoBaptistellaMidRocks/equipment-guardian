@@ -1,6 +1,6 @@
 import { AlertTriangle, ArrowLeft, Truck, X } from "lucide-react";
-import type { CSSProperties } from "react";
-import { useMlPrediction, usePrediction } from "../hooks/useAssets";
+import { useEffect, useState, type CSSProperties } from "react";
+import { useAssetHistory, useAssetTimeline, useMlPrediction, usePrediction } from "../hooks/useAssets";
 import type { AssetOverview } from "../types/assets";
 import { formatAssetType, healthTone, measurementNumber, measurementText } from "../utils/assets";
 
@@ -128,18 +128,101 @@ function RecommendedActions({ assetOverview, isCritical }: { assetOverview: Asse
   );
 }
 
-function Timeline() {
-  const events = [["Live", "Health engine rule evaluation updated", "good"]];
+function toTimelineTone(severity: string): "good" | "warning" | "critical" {
+  const normalized = severity.toUpperCase();
+  if (normalized.includes("CRITICAL") || normalized.includes("90") || normalized.includes("100")) {
+    return "critical";
+  }
+  if (normalized.includes("HIGH") || normalized.includes("MEDIUM") || normalized.includes("70") || normalized.includes("80")) {
+    return "warning";
+  }
+
+  return "good";
+}
+
+function TimelineTab({ assetId }: { assetId: string }) {
+  const timelineQuery = useAssetTimeline(assetId);
+
+  if (timelineQuery.isLoading) {
+    return (
+      <section className="drawer-section">
+        <h3>Asset Timeline</h3>
+        <p className="prediction-empty">Loading telemetry events, alerts, and incidents...</p>
+      </section>
+    );
+  }
+
+  if (timelineQuery.isError || !timelineQuery.data) {
+    return (
+      <section className="drawer-section">
+        <h3>Asset Timeline</h3>
+        <p className="prediction-empty">Timeline unavailable for this asset.</p>
+      </section>
+    );
+  }
+
+  const entries = timelineQuery.data.timeline;
 
   return (
     <section className="drawer-section">
-      <h3>Recent Timeline</h3>
+      <h3>Asset Timeline</h3>
       <ol className="timeline-list">
-        {events.map(([time, label, tone]) => (
-          <li className={tone} key={`${time}-${label}`}><b>{time}</b><span>{label}</span></li>
+        {entries.map((event) => (
+          <li className={toTimelineTone(event.severity)} key={`${event.entryType}-${event.timestamp}-${event.message}`}>
+            <b>{event.entryType.replace(/_/g, " ")}</b>
+            <span>{event.message}</span>
+          </li>
         ))}
       </ol>
-      <a className="history-link" href="/">See full history</a>
+    </section>
+  );
+}
+
+function PredictionExplanationPanel({ assetId }: { assetId: string }) {
+  const historyQuery = useAssetHistory(assetId);
+
+  if (historyQuery.isLoading) {
+    return (
+      <section className="drawer-section">
+        <h3>Prediction Explanation</h3>
+        <p className="prediction-empty">Analyzing historical telemetry drivers...</p>
+      </section>
+    );
+  }
+
+  if (historyQuery.isError || !historyQuery.data) {
+    return (
+      <section className="drawer-section">
+        <h3>Prediction Explanation</h3>
+        <p className="prediction-empty">No prediction explanation available.</p>
+      </section>
+    );
+  }
+
+  const explanation = historyQuery.data.predictionExplanation;
+  const telemetryKeys = Object.keys(explanation.supportingTelemetryValues);
+
+  return (
+    <section className="drawer-section">
+      <h3>Prediction Explanation</h3>
+      <article className="prediction-panel">
+        <div className="prediction-drivers">
+          <span>Top Drivers</span>
+          <ul>
+            {explanation.topPredictionDrivers.map((driver) => (
+              <li key={driver}>{driver}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="prediction-support-grid">
+          {telemetryKeys.map((key) => (
+            <div key={key}>
+              <span>{key}</span>
+              <strong>{explanation.supportingTelemetryValues[key]}</strong>
+            </div>
+          ))}
+        </div>
+      </article>
     </section>
   );
 }
@@ -219,6 +302,11 @@ export function AssetDrawer({ assetOverview, isLoading, onClose }: AssetDrawerPr
   const measurements = assetOverview?.telemetry.measurements ?? {};
   const tone = assetOverview ? healthTone(assetOverview.health.riskLevel) : "normal";
   const isCritical = assetOverview?.health.riskLevel === "CRITICAL";
+  const [activeTab, setActiveTab] = useState<"overview" | "timeline">("overview");
+
+  useEffect(() => {
+    setActiveTab("overview");
+  }, [assetOverview?.asset.id]);
 
   return (
     <aside className={`asset-drawer ${isOpen ? "open" : ""}`} aria-label="Asset details">
@@ -249,13 +337,24 @@ export function AssetDrawer({ assetOverview, isLoading, onClose }: AssetDrawerPr
             <DetailCell label="Hours" value={`${measurementNumber(measurements, "engineHours", 6240.2).toLocaleString()}h`} />
           </div>
 
-          <HealthOverview assetOverview={assetOverview} />
-          <TireMonitor assetOverview={assetOverview} />
-          <RiskInsight assetOverview={assetOverview} />
-          <OperationalPrediction assetId={assetOverview.asset.id} />
-          <MlPredictionPanel assetId={assetOverview.asset.id} />
-          <RecommendedActions assetOverview={assetOverview} isCritical={isCritical} />
-          <Timeline />
+          <div className="drawer-tabs" role="tablist" aria-label="Asset details tabs">
+            <button className={activeTab === "overview" ? "active" : ""} type="button" onClick={() => setActiveTab("overview")}>Overview</button>
+            <button className={activeTab === "timeline" ? "active" : ""} type="button" onClick={() => setActiveTab("timeline")}>Timeline</button>
+          </div>
+
+          {activeTab === "overview" ? (
+            <>
+              <HealthOverview assetOverview={assetOverview} />
+              <TireMonitor assetOverview={assetOverview} />
+              <RiskInsight assetOverview={assetOverview} />
+              <OperationalPrediction assetId={assetOverview.asset.id} />
+              <MlPredictionPanel assetId={assetOverview.asset.id} />
+              <PredictionExplanationPanel assetId={assetOverview.asset.id} />
+              <RecommendedActions assetOverview={assetOverview} isCritical={isCritical} />
+            </>
+          ) : (
+            <TimelineTab assetId={assetOverview.asset.id} />
+          )}
         </>
       ) : null}
     </aside>

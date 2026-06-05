@@ -1,5 +1,14 @@
 import { apiClient } from "./client";
-import type { AssetAlert, AssetHealth, AssetOverview, MlPrediction, Prediction } from "../types/assets";
+import type {
+  AssetAlert,
+  AssetHealth,
+  AssetHistory,
+  AssetOverview,
+  AssetTimeline,
+  FleetAnalytics,
+  MlPrediction,
+  Prediction
+} from "../types/assets";
 
 export async function listAssets(): Promise<AssetOverview[]> {
   const response = await apiClient.get<AssetOverview[]>("/api/assets");
@@ -38,5 +47,20 @@ export async function listMlPredictions(): Promise<MlPrediction[]> {
 
 export async function getMlPrediction(assetId: string): Promise<MlPrediction> {
   const response = await apiClient.get<MlPrediction>(`/api/ml/predictions/${assetId}`);
+  return response.data;
+}
+
+export async function getAssetHistory(assetId: string): Promise<AssetHistory> {
+  const response = await apiClient.get<AssetHistory>(`/api/assets/${assetId}/history`);
+  return response.data;
+}
+
+export async function getAssetTimeline(assetId: string): Promise<AssetTimeline> {
+  const response = await apiClient.get<AssetTimeline>(`/api/assets/${assetId}/timeline`);
+  return response.data;
+}
+
+export async function getFleetAnalytics(): Promise<FleetAnalytics> {
+  const response = await apiClient.get<FleetAnalytics>("/api/analytics/fleet");
   return response.data;
 }

@@ -22,6 +22,13 @@ class AlertSeverity(StrEnum):
     CRITICAL = "CRITICAL"
 
 
+class IncidentSeverity(StrEnum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+
 class AssetPosition(BaseModel):
     x: float
     y: float
@@ -67,3 +74,11 @@ class AssetOverview(BaseModel):
     asset: Asset
     health: AssetHealth
     telemetry: AssetTelemetry
+
+
+class AssetIncident(BaseModel):
+    assetId: str
+    eventType: str
+    eventTime: str
+    severity: IncidentSeverity
+    summary: str

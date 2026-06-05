@@ -76,3 +76,44 @@ export interface MlPrediction {
   confidence: number;
   modelVersion: string;
 }
+
+export type TimelineEntryType = "TELEMETRY_EVENT" | "ALERT" | "HEALTH_CHANGE" | "PREDICTION" | "INCIDENT";
+
+export interface PredictionExplanation {
+  topPredictionDrivers: string[];
+  supportingTelemetryValues: Record<string, number>;
+}
+
+export interface AssetHistory {
+  assetId: string;
+  telemetry: Array<Record<string, number | string | boolean | null>>;
+  predictionExplanation: PredictionExplanation;
+}
+
+export interface TimelineEntry {
+  assetId: string;
+  timestamp: string;
+  entryType: TimelineEntryType;
+  message: string;
+  severity: string;
+  details: Record<string, number | string | boolean | null>;
+}
+
+export interface AssetTimeline {
+  assetId: string;
+  timeline: TimelineEntry[];
+}
+
+export interface TrendPoint {
+  timestamp: string;
+  value: number;
+}
+
+export interface FleetAnalytics {
+  failureTrends: TrendPoint[];
+  fleetHealthTrends: TrendPoint[];
+  predictedFailures: number;
+  downtimeAvoided: number;
+  assetsWithHighestRisk: string[];
+  averagePredictionConfidence: number;
+}
