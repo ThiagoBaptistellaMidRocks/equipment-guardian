@@ -117,3 +117,11 @@ export interface FleetAnalytics {
   assetsWithHighestRisk: string[];
   averagePredictionConfidence: number;
 }
+
+export interface CopilotChatRequest {
+  message: string;
+}
+
+export interface CopilotChatResponse {
+  response: string;
+}

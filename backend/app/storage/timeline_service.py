@@ -2,11 +2,11 @@ from pydantic import BaseModel
 
 from app.domain.assets import AssetIncident, AssetOverview, IncidentSeverity
 from app.health.engine import health_engine
-from app.history.event_history import EventHistoryItem, TimelineEntryType
-from app.history.telemetry_history import telemetry_history_store
-from app.models.prediction_service import PredictionService
+from app.storage.event_history import EventHistoryItem, TimelineEntryType
+from app.storage.telemetry_history import telemetry_history_store
+from app.prediction.ml.prediction_service import PredictionService
 from app.prediction.engine import prediction_engine
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 
 class PredictionExplanation(BaseModel):

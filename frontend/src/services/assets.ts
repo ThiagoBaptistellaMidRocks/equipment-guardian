@@ -1,6 +1,8 @@
 import { apiClient } from "./client";
 import type {
   AssetAlert,
+  CopilotChatRequest,
+  CopilotChatResponse,
   AssetHealth,
   AssetHistory,
   AssetOverview,
@@ -62,5 +64,10 @@ export async function getAssetTimeline(assetId: string): Promise<AssetTimeline> 
 
 export async function getFleetAnalytics(): Promise<FleetAnalytics> {
   const response = await apiClient.get<FleetAnalytics>("/api/analytics/fleet");
+  return response.data;
+}
+
+export async function postCopilotChat(payload: CopilotChatRequest): Promise<CopilotChatResponse> {
+  const response = await apiClient.post<CopilotChatResponse>("/api/copilot/chat", payload);
   return response.data;
 }

@@ -4,8 +4,8 @@ from datetime import datetime
 import pandas as pd
 
 from app.domain.assets import AssetTelemetry
-from app.ml.feature_builder import FeatureBuilder
-from app.models.asset_event import AssetEvent, AssetEventType
+from app.prediction.ml.feature_builder import FeatureBuilder
+from app.prediction.ml.asset_event import AssetEvent, AssetEventType
 
 
 class DatasetBuilder:

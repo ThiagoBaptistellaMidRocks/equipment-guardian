@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 
 from app.domain.assets import AssetOverview
-from app.history.timeline_service import AssetHistoryResponse, AssetTimelineResponse, timeline_service
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.storage.timeline_service import AssetHistoryResponse, AssetTimelineResponse, timeline_service
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 router = APIRouter(prefix="/assets", tags=["assets"])
 

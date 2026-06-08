@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
 from app.domain.assets import AssetTelemetry
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 
 class TelemetryHistoryStore:

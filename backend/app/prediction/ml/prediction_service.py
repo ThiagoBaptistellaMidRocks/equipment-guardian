@@ -4,8 +4,8 @@ import xgboost as xgb
 from pydantic import BaseModel
 
 from app.domain.assets import AssetOverview, AssetType
-from app.ml.feature_builder import FeatureBuilder
-from app.models.model_loader import ModelLoader
+from app.prediction.ml.feature_builder import FeatureBuilder
+from app.prediction.ml.model_loader import ModelLoader
 
 
 class MlPrediction(BaseModel):

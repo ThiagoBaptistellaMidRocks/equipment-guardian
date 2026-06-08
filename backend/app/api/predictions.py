@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.prediction.engine import prediction_engine
 from app.prediction.models import Prediction
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 router = APIRouter(prefix="/predictions", tags=["predictions"])
 

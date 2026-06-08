@@ -7,12 +7,12 @@ import xgboost as xgb
 from sklearn.model_selection import train_test_split
 
 from app.domain.assets import AssetTelemetry, AssetType
-from app.ml.dataset_builder import DatasetBuilder
-from app.ml.evaluation_service import EvaluationService
-from app.ml.feature_builder import FeatureBuilder
-from app.models.asset_event import AssetEvent, AssetEventSeverity, AssetEventType
-from app.models.model_loader import MODEL_PATH, MODEL_VERSION
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.prediction.ml.dataset_builder import DatasetBuilder
+from app.prediction.ml.evaluation_service import EvaluationService
+from app.prediction.ml.feature_builder import FeatureBuilder
+from app.prediction.ml.asset_event import AssetEvent, AssetEventSeverity, AssetEventType
+from app.prediction.ml.model_loader import MODEL_PATH, MODEL_VERSION
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 
 class TrainingService:

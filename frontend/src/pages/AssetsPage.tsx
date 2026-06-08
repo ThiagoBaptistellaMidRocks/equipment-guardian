@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { SideNav, TopBar } from "../components/AppChrome";
 import { AssetDrawer } from "../components/AssetDrawer";
+import { CopilotPanel } from "../components/CopilotPanel";
 import { DashboardFilters } from "../components/DashboardFilters";
 import { FleetSummary } from "../components/FleetSummary";
 import { OperationsMap } from "../components/OperationsMap";
@@ -9,6 +10,7 @@ import { useAsset, useAssets } from "../hooks/useAssets";
 
 export function AssetsPage() {
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   const assetsQuery = useAssets();
   const selectedAssetQuery = useAsset(selectedAssetId);
 
@@ -21,10 +23,14 @@ export function AssetsPage() {
   }, [assetsQuery.data, selectedAssetId, selectedAssetQuery.data]);
 
   return (
-    <div className={`dashboard-layout ${selectedAssetId ? "drawer-open" : ""}`}>
+    <div className={`dashboard-layout ${selectedAssetId ? "drawer-open" : ""} ${isCopilotOpen ? "copilot-open" : ""}`}>
       <TopBar />
       <SideNav />
       <DashboardFilters selectedAssetId={selectedAssetId} />
+
+      <button className="copilot-trigger" type="button" onClick={() => setIsCopilotOpen(true)}>
+        Ask Equipment Guardian
+      </button>
 
       {assetsQuery.isLoading ? (
         <section className="panel-state">Loading assets...</section>
@@ -45,6 +51,12 @@ export function AssetsPage() {
         assetOverview={selectedAsset}
         isLoading={selectedAssetQuery.isLoading}
         onClose={() => setSelectedAssetId(null)}
+      />
+
+      <CopilotPanel
+        isOpen={isCopilotOpen}
+        selectedAssetId={selectedAssetId}
+        onClose={() => setIsCopilotOpen(false)}
       />
     </div>
   );

@@ -214,6 +214,23 @@ button {
   gap: 10px;
 }
 
+.copilot-trigger {
+  position: fixed;
+  top: 72px;
+  right: 24px;
+  z-index: 14;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid #27a5dd;
+  border-radius: 18px;
+  color: #dcf5ff;
+  background: rgba(39, 165, 221, 0.2);
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 .search-control {
   display: flex;
   align-items: center;
@@ -270,6 +287,14 @@ button {
 .drawer-open .operations-map {
   right: 420px;
   border-right: 2px solid var(--orange);
+}
+
+.copilot-open .operations-map {
+  right: 420px;
+}
+
+.drawer-open.copilot-open .operations-map {
+  right: 840px;
 }
 
 .map-canvas,
@@ -613,8 +638,168 @@ button {
   overflow-y: auto;
 }
 
+.copilot-open .asset-drawer {
+  right: 420px;
+}
+
 .asset-drawer.open {
   transform: translateX(0);
+}
+
+.copilot-panel {
+  position: fixed;
+  top: 48px;
+  right: 0;
+  bottom: 0;
+  z-index: 23;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  width: 420px;
+  border-left: 1px solid #27a5dd;
+  background: #070f1b;
+  box-shadow: -30px 0 80px rgba(0, 0, 0, 0.42);
+  transform: translateX(100%);
+  transition: transform 160ms ease;
+}
+
+.copilot-panel.open {
+  transform: translateX(0);
+}
+
+.copilot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.copilot-header h3 {
+  margin: 0;
+  color: #72d7ff;
+  font-size: 0.84rem;
+  text-transform: uppercase;
+}
+
+.copilot-header span {
+  color: #8ea8c2;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.copilot-messages {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.copilot-empty-state {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #1f3b59;
+  border-radius: 4px;
+  color: #c8d9ea;
+  background: rgba(17, 37, 58, 0.35);
+  font-size: 0.76rem;
+}
+
+.copilot-empty-state button {
+  min-height: 34px;
+  border: 1px solid #27a5dd;
+  border-radius: 4px;
+  color: #dcf5ff;
+  background: rgba(39, 165, 221, 0.18);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.chat-message {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #1f314b;
+  border-radius: 4px;
+  background: #111d2f;
+}
+
+.chat-message.user {
+  border-color: #4a3f1f;
+  background: #241d0f;
+}
+
+.chat-role-icon {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  color: #0d1728;
+  background: #72d7ff;
+}
+
+.chat-message.user .chat-role-icon {
+  background: #ffb000;
+}
+
+.chat-message p {
+  margin: 0;
+  color: #edf6ff;
+  white-space: pre-wrap;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.copilot-error {
+  margin: 0;
+  padding: 0 12px 10px;
+  color: #ff767d;
+  font-size: 0.72rem;
+}
+
+.copilot-compose {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid var(--line);
+  background: #091325;
+}
+
+.copilot-compose input {
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid #274567;
+  border-radius: 4px;
+  color: #edf6ff;
+  background: #0f1a2f;
+  font-size: 0.76rem;
+}
+
+.copilot-compose button {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #27a5dd;
+  border-radius: 4px;
+  color: #dcf5ff;
+  background: rgba(39, 165, 221, 0.22);
+  cursor: pointer;
+}
+
+.copilot-compose button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .drawer-nav {
@@ -1158,6 +1343,13 @@ button {
     flex-wrap: wrap;
   }
 
+  .copilot-trigger {
+    top: auto;
+    bottom: 14px;
+    right: 12px;
+    z-index: 26;
+  }
+
   .operations-map {
     right: 0;
   }
@@ -1174,7 +1366,20 @@ button {
     right: 0;
   }
 
+  .copilot-open .operations-map,
+  .drawer-open.copilot-open .operations-map {
+    right: 0;
+  }
+
   .asset-drawer {
+    width: calc(100vw - 56px);
+  }
+
+  .copilot-open .asset-drawer {
+    right: 0;
+  }
+
+  .copilot-panel {
     width: calc(100vw - 56px);
   }
 }

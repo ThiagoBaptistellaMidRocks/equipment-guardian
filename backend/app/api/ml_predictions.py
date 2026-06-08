@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
-from app.models.prediction_service import MlPrediction, PredictionService
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.prediction.ml.prediction_service import MlPrediction, PredictionService
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 router = APIRouter(prefix="/ml/predictions", tags=["ml-predictions"])
 prediction_service = PredictionService()

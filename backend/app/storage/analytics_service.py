@@ -3,9 +3,9 @@ from datetime import datetime
 from pydantic import BaseModel
 
 from app.health.engine import health_engine
-from app.history.telemetry_history import telemetry_history_store
-from app.models.prediction_service import PredictionService
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.storage.telemetry_history import telemetry_history_store
+from app.prediction.ml.prediction_service import PredictionService
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 
 class TrendPoint(BaseModel):

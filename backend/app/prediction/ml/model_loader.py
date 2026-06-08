@@ -16,7 +16,7 @@ class ModelLoader:
 
     def load_active_model(self) -> xgb.Booster:
         if not self.model_exists():
-            from app.ml.training_service import TrainingService
+            from app.prediction.ml.training_service import TrainingService
 
             TrainingService().ensure_model()
 

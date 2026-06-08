@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.history.analytics_service import FleetAnalytics, analytics_service
+from app.storage.analytics_service import FleetAnalytics, analytics_service
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])
 

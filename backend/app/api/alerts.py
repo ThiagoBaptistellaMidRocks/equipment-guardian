@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from app.alerts.service import list_active_alerts
 from app.health.models import AssetAlert
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
 

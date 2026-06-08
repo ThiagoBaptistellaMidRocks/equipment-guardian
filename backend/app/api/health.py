@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from app.domain.assets import AssetHealth
 from app.health.engine import health_engine
-from app.repositories.mock_asset_repository import mock_asset_repository
+from app.storage.repositories.mock_asset_repository import mock_asset_repository
 
 router = APIRouter(prefix="/health", tags=["health"])
 
