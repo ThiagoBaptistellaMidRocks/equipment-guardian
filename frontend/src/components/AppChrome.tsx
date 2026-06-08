@@ -10,7 +10,11 @@ import {
   Wrench
 } from "lucide-react";
 
-export function TopBar() {
+interface TopBarProps {
+  onCopilotOpen?: () => void;
+}
+
+export function TopBar({ onCopilotOpen }: TopBarProps) {
   return (
     <header className="top-bar">
       <div className="brand-lockup">
@@ -26,6 +30,11 @@ export function TopBar() {
       <div className="system-state">
         <span className="online-dot" />
         <span>System Online</span>
+        {onCopilotOpen && (
+          <button className="copilot-trigger-topbar" type="button" onClick={onCopilotOpen}>
+            Ask AI Copilot
+          </button>
+        )}
         <span className="bell-wrap"><Bell size={18} /><small>3</small></span>
         <span className="avatar">JM</span>
       </div>

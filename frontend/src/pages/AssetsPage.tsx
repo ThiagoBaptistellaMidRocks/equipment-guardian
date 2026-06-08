@@ -24,13 +24,9 @@ export function AssetsPage() {
 
   return (
     <div className={`dashboard-layout ${selectedAssetId ? "drawer-open" : ""} ${isCopilotOpen ? "copilot-open" : ""}`}>
-      <TopBar />
+      <TopBar onCopilotOpen={() => setIsCopilotOpen(true)} />
       <SideNav />
       <DashboardFilters selectedAssetId={selectedAssetId} />
-
-      <button className="copilot-trigger" type="button" onClick={() => setIsCopilotOpen(true)}>
-        Ask Equipment Guardian
-      </button>
 
       {assetsQuery.isLoading ? (
         <section className="panel-state">Loading assets...</section>

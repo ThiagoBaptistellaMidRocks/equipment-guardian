@@ -214,21 +214,18 @@ button {
   gap: 10px;
 }
 
-.copilot-trigger {
-  position: fixed;
-  top: 72px;
-  right: 24px;
-  z-index: 14;
-  height: 36px;
-  padding: 0 14px;
+.copilot-trigger-topbar {
+  height: 26px;
+  padding: 0 12px;
   border: 1px solid #27a5dd;
-  border-radius: 18px;
+  border-radius: 13px;
   color: #dcf5ff;
-  background: rgba(39, 165, 221, 0.2);
-  font-size: 0.74rem;
+  background: rgba(39, 165, 221, 0.15);
+  font-size: 0.68rem;
   font-weight: 900;
   text-transform: uppercase;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .search-control {
@@ -307,18 +304,21 @@ button {
   pointer-events: none;
 }
 
+.operations-map .maplibregl-map {
+  width: 100%;
+  height: 100%;
+}
+
 .map-marker-label {
-  position: absolute;
   display: grid;
   justify-items: center;
   gap: 4px;
-  width: 54px;
-  margin-left: -27px;
-  margin-top: -24px;
+  width: auto;
   border: 0;
   background: transparent;
   pointer-events: auto;
   cursor: pointer;
+  padding: 0;
 }
 
 .marker-glyph {
@@ -330,7 +330,7 @@ button {
   border-radius: 999px;
   color: var(--green);
   background: rgba(14, 22, 36, 0.92);
-  box-shadow: 0 0 0 5px rgba(0, 211, 148, 0.16), 0 0 24px rgba(0, 211, 148, 0.3);
+  box-shadow: 0 0 0 3px rgba(0, 211, 148, 0.18), 0 0 10px rgba(0, 211, 148, 0.28);
   font-size: 1rem;
   font-weight: 900;
 }
@@ -343,6 +343,7 @@ button {
   background: #111a2b;
   font-size: 0.62rem;
   font-weight: 800;
+  white-space: nowrap;
 }
 
 .prediction-badge {
@@ -375,21 +376,30 @@ button {
 
 .map-marker-label.warning .marker-glyph {
   color: var(--orange-2);
-  box-shadow: 0 0 0 5px rgba(255, 176, 0, 0.14), 0 0 24px rgba(255, 176, 0, 0.25);
+  box-shadow: 0 0 0 3px rgba(255, 176, 0, 0.18), 0 0 10px rgba(255, 176, 0, 0.3);
 }
 
 .map-marker-label.critical .marker-glyph {
   color: var(--red);
-  box-shadow: 0 0 0 5px rgba(255, 69, 79, 0.2), 0 0 34px rgba(255, 69, 79, 0.48);
+  box-shadow: 0 0 0 3px rgba(255, 69, 79, 0.22), 0 0 12px rgba(255, 69, 79, 0.5);
 }
 
 .map-marker-label.selected .marker-glyph {
   transform: scale(1.08);
 }
 
+.alert-popup-wrapper .maplibregl-popup-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.alert-popup-wrapper .maplibregl-popup-tip {
+  border-top-color: var(--red);
+}
+
 .alert-callout {
-  position: absolute;
-  z-index: 7;
   display: grid;
   gap: 4px;
   width: 224px;
@@ -1238,9 +1248,10 @@ button {
 
 .timeline-list li {
   display: grid;
-  grid-template-columns: 44px 1fr;
-  align-items: center;
-  gap: 10px;
+  grid-template-columns: 16px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  row-gap: 3px;
   color: #8490a4;
   font-size: 0.72rem;
 }
@@ -1249,22 +1260,27 @@ button {
   content: "";
   grid-column: 1;
   grid-row: 1;
+  align-self: center;
   width: 6px;
   height: 6px;
   border-radius: 999px;
   background: currentColor;
+  margin-top: 1px;
 }
 
 .timeline-list b {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
-  padding-left: 16px;
   color: var(--orange);
   font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.03em;
 }
 
 .timeline-list span {
   grid-column: 2;
+  grid-row: 2;
+  line-height: 1.4;
 }
 
 .timeline-list .critical {

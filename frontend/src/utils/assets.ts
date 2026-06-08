@@ -1,5 +1,25 @@
 import type { AssetPosition, AssetType, RiskLevel } from "../types/assets";
 
+// Cloudbreak mine, Pilbara, WA — Fortescue flagship site
+const MINE_CENTER_LAT = -22.3095;
+const MINE_CENTER_LNG = 119.0920;
+// ~33 metres per world unit at this latitude
+const SCALE_LAT = 0.000296;
+const SCALE_LNG = 0.000320;
+
+export function assetToGeo(position: AssetPosition): { latitude: number; longitude: number } {
+  return {
+    latitude: MINE_CENTER_LAT + position.y * SCALE_LAT,
+    longitude: MINE_CENTER_LNG + position.x * SCALE_LNG,
+  };
+}
+
+export const MINE_INITIAL_VIEW = {
+  latitude: MINE_CENTER_LAT,
+  longitude: MINE_CENTER_LNG,
+  zoom: 15.5,
+};
+
 export function formatAssetType(assetType: AssetType): string {
   return assetType
     .toLowerCase()
