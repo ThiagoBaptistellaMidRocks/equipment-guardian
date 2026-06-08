@@ -832,7 +832,13 @@ button {
 }
 
 .close-button {
-  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  color: #8e9aaf;
+  background: transparent;
+  cursor: pointer;
 }
 
 .asset-identity {
